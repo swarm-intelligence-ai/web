@@ -23,20 +23,3 @@ if (reducedMotion || !('IntersectionObserver' in window)) {
   document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
 }
 document.querySelector('[data-year]').textContent = new Date().getFullYear();
-
-const acceleratorImage = document.querySelector('[data-accelerator-image]');
-const acceleratorOptions = document.querySelectorAll('[data-accelerator-option]');
-acceleratorOptions.forEach(option => option.addEventListener('click', () => {
-  if (option.getAttribute('aria-pressed') === 'true') return;
-  acceleratorOptions.forEach(button => {
-    const selected = button === option;
-    button.classList.toggle('active', selected);
-    button.setAttribute('aria-pressed', String(selected));
-  });
-  acceleratorImage.style.opacity = '0';
-  window.setTimeout(() => {
-    acceleratorImage.src = option.dataset.acceleratorOption;
-    acceleratorImage.alt = option.dataset.acceleratorAlt;
-    acceleratorImage.style.opacity = '1';
-  }, reducedMotion ? 0 : 160);
-}));
