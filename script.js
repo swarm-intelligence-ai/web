@@ -9,7 +9,19 @@ function setNavigation(open) {
 }
 toggle.addEventListener('click', () => setNavigation(toggle.getAttribute('aria-expanded') !== 'true'));
 nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setNavigation(false)));
-document.addEventListener('keydown', event => { if (event.key === 'Escape') setNavigation(false); });
+const navGroups = [...nav.querySelectorAll('.nav-group')];
+navGroups.forEach(group => group.addEventListener('toggle', () => {
+  if (group.open) navGroups.filter(item => item !== group).forEach(item => { item.open = false; });
+}));
+document.addEventListener('click', event => {
+  if (!nav.contains(event.target)) navGroups.forEach(group => { group.open = false; });
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    navGroups.forEach(group => { group.open = false; });
+    setNavigation(false);
+  }
+});
 function updateHeader() { header.classList.toggle('scrolled', window.scrollY > 24); }
 window.addEventListener('scroll', updateHeader, { passive: true });
 updateHeader();
